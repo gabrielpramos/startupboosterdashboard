@@ -1,0 +1,12 @@
+#app>.el-menu.main-navbar {
+    position: fixed;
+    width: 10vh;
+    height: 100%;
+    border-bottom-left-radius: 0px;
+}
+
+#app>.el-menu>.el-button.home-button {
+    border-radius: 60%;
+    width: 10%;
+    border: none;
+}
