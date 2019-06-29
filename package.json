@@ -37,6 +37,8 @@
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
     "jest-cli": "^24.8.0",
-    "react-test-renderer": "^16.8.6"
+    "react-redux": "^7.1.0",
+    "react-test-renderer": "^16.8.6",
+    "redux": "^4.0.1"
   }
 }
