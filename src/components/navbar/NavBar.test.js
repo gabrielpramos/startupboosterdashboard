@@ -8,8 +8,8 @@ it('renders without crashing', () => {
     expect(navbar).toMatchSnapshot();
 });
 
-it('reloads the HomePage when .home-button clicked', ()=>{
-    const wrapper = render(<NavBar />);
-    wrapper.find('.home-button').simulate('click');
-    expect(wrapper).toMatchSnapshot();
+it('reloads the HomePage when .home-button clicked', () => {
+    const homeButtonWrapper = navbar.find('.home-button');
+    homeButtonWrapper.simulate('click');
+    expect(navbar).toMatchSnapshot();
 });
