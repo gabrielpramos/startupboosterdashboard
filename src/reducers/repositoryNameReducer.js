@@ -1,13 +1,13 @@
 import { CHANGE_REPOSITORY_NAME } from '../actions/actionTypes';
 const initialState = {
-    newValue: ''
+    repositoryName: ''
 }
 export const repositoryNameReducer = (state = initialState, action) => {
     switch (action.type) {
         case CHANGE_REPOSITORY_NAME:
             return {
                 ...state,
-                newValue: action.newValue
+                repositoryName: action.repositoryName
             };
         default:
             return state;
