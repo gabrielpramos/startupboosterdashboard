@@ -1,9 +1,25 @@
-.box-card {
+.component-container>.box-card {
     height: 10vh;
     width: 80%;
+    border-radius: 0px;
 }
 
 .component-container>.el-card {
     border: none;
-    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .12), 0 0 6px 0 rgba(0, 0, 0, .04);
+    box-shadow: 0 0px 0px 0 rgba(0, 0, 0, .12), 0 0 3px 0 rgba(0, 0, 0, .04);
+}
+
+.component-container>.el-card .input-field>input {
+    border: none;
+}
+
+.component-container>.el-card .username-field>input {
+    font-size: 32px;
+}
+
+.component-container>.el-card .repositoryname-field>input {
+    color: #ccc;
+    font-size: 12px;
+    font-weight: 600;
+    height: 24px;
 }
