@@ -5,6 +5,6 @@ import { repositoryNameReducer } from './repositoryNameReducer'
 import { combineReducers } from 'redux';
 export const Reducers = combineReducers({
     clickState: clickReducer,
-    userNameReducer: userNameReducer,
-    repositoryNameReducer: repositoryNameReducer,
+    userNameState: userNameReducer,
+    repositoryNameState: repositoryNameReducer,
 });
