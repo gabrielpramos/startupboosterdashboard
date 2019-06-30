@@ -7,6 +7,9 @@ class HomePage extends Component {
         return (
             <div className="component-container">
                 <RepositorySearchField />
+                <div className="">
+                    
+                </div>
             </div>
         );
     }
