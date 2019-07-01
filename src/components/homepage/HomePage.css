@@ -1,10 +1,9 @@
 .component-container {
-    background-color: #f1f2f5;
     height: 100%;
-    width: 100%;
+    width: 80%;
     display: block;
 }
 
 .graph-components-container {
-    padding: 0px 15px;
+    padding: 20px 45px;
 }
