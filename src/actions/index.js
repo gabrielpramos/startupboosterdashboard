@@ -6,10 +6,10 @@ export const clickButton = value => ({
 
 export const userNameChange = value => ({
   type: CHANGE_USER_NAME,
-  userName: value
+  value: value
 });
 
 export const repositoryNameChange = value => ({
   type: CHANGE_REPOSITORY_NAME,
-  repositoryName: value
+  value: value
 });

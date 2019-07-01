@@ -7,8 +7,8 @@ import { bindActionCreators } from 'redux';
 import { userNameChange, repositoryNameChange } from '../../actions';
 
 const mapStateToProps = store => ({
-    userName: store.userNameState.userName,
-    repositoryName: store.repositoryNameState.repositoryName
+    userName: store.userNameState.value,
+    repositoryName: store.repositoryNameState.value
 })
 const mapDispatchToProps = dispatch =>
     bindActionCreators({ userNameChange, repositoryNameChange }, dispatch);
@@ -19,9 +19,12 @@ const enhance = compose(
 
 class RepositorySearchField extends Component {
 
-    state = {
-        userName: '',
-        repositoryName: '',
+    constructor() {
+        super();
+        this.state = {
+            userName: '',
+            repositoryName: '',
+        }
     }
 
     userNameOnChangeHandler = event => {
