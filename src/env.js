@@ -1,0 +1,1 @@
+export default { ACCESS_TOKEN: '3bcc4225b9c994b011f8b4d0fec6c1a46f27236a' };
