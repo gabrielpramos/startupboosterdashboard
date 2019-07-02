@@ -1,8 +1,4 @@
-import { CLICK_UPDATE_VALUE, CHANGE_USER_NAME, CHANGE_REPOSITORY_NAME } from '../actions/actionTypes';
-export const clickButton = value => ({
-  type: CLICK_UPDATE_VALUE,
-  newValue: value
-});
+import { CHANGE_USER_NAME, CHANGE_REPOSITORY_NAME, MERGE_QUERY_CHANGE } from '../actions/actionTypes';
 
 export const userNameChange = value => ({
   type: CHANGE_USER_NAME,
@@ -11,5 +7,10 @@ export const userNameChange = value => ({
 
 export const repositoryNameChange = value => ({
   type: CHANGE_REPOSITORY_NAME,
+  value: value
+});
+
+export const mergeQueryChange = value => ({
+  type: MERGE_QUERY_CHANGE,
   value: value
 });
