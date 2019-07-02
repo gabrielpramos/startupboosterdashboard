@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { Card, Input } from 'element-react';
 import { connect } from 'react-redux';
-import { compose } from 'redux';
+import { compose, bindActionCreators } from 'redux';
 import './RepositorySearchField.css';
-import { bindActionCreators } from 'redux';
 import { userNameChange, repositoryNameChange } from '../../actions';
 
 const mapStateToProps = store => ({
