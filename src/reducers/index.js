@@ -1,12 +1,19 @@
 //types
-import { CHANGE_USER_NAME, CHANGE_REPOSITORY_NAME } from '../actions/actionTypes';
+import { CHANGE_USER_NAME, CHANGE_REPOSITORY_NAME, MERGE_QUERY_CHANGE } from '../actions/actionTypes';
 import { combineReducers } from 'redux';
 
 const initialUserState = {
-    userName: '',
+    value: '',
 }
 const initialRepositoryState = {
-    repositoryName: '',
+    value: '',
+}
+const initialMergeQueryState = {
+    data: {
+        lastCursor: null,
+        totalCount: 0,
+        nodes: []
+    }
 }
 
 export const userNameReducer = (state = initialUserState, action) => {
@@ -33,7 +40,20 @@ export const repositoryNameReducer = (state = initialRepositoryState, action) =>
     }
 };
 
+export const mergeQueryReducer = (state = initialMergeQueryState, action) => {
+    switch (action.type) {
+        case MERGE_QUERY_CHANGE:
+            return {
+                ...state,
+                value: action.value
+            };
+        default:
+            return state;
+    }
+}
+
 export const Reducers = combineReducers({
     userNameState: userNameReducer,
     repositoryNameState: repositoryNameReducer,
+    mergeQueryState: mergeQueryReducer,
 });
