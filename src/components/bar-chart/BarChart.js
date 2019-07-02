@@ -2,6 +2,20 @@ import React, { Component } from 'react';
 import { Bar } from 'react-chartjs-2';
 import 'chartjs-plugin-style';
 import ChartSettings from '../../utils/ChartSettings';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+
+const mapStateToProps = store => ({
+    userName: store.userNameState.value,
+    repositoryName: store.repositoryNameState.value,
+    mergeDataInsightsState: store.mergeDataInsightsState.value,
+
+})
+
+const enhance = compose(
+    connect(mapStateToProps)
+);
+
 
 class BarChart extends Component {
 
@@ -15,9 +29,17 @@ class BarChart extends Component {
 
     }
 
-    eventHandler() {
-        this.chartRef.current.chartInstance.data.datasets[0].data = [32, 33, 8];
+    updateChar(newData) {
+        this.chartRef.current.chartInstance.data.datasets[0].data = newData;
         this.chartRef.current.chartInstance.update();
+    }
+
+    componentWillReceiveProps(nextProps) {
+        console.log(nextProps);
+        let insights = nextProps.mergeDataInsightsState;
+        if (insights) {
+            this.updateChar([insights.small, insights.medium, insights.large]);
+        }
     }
 
     render() {
@@ -40,4 +62,4 @@ class BarChart extends Component {
     }
 }
 
-export default BarChart;
+export default enhance(BarChart);;

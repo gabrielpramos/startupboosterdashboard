@@ -8,7 +8,7 @@ const initialUserState = {
 const initialRepositoryState = {
     value: '',
 }
-const initialMergeQueryState = {
+const initialMergeDataInsightsState = {
     data: {
         lastCursor: null,
         totalCount: 0,
@@ -40,7 +40,7 @@ export const repositoryNameReducer = (state = initialRepositoryState, action) =>
     }
 };
 
-export const mergeQueryReducer = (state = initialMergeQueryState, action) => {
+export const mergeDataInsightsReducer = (state = initialMergeDataInsightsState, action) => {
     switch (action.type) {
         case MERGE_QUERY_CHANGE:
             return {
@@ -55,5 +55,5 @@ export const mergeQueryReducer = (state = initialMergeQueryState, action) => {
 export const Reducers = combineReducers({
     userNameState: userNameReducer,
     repositoryNameState: repositoryNameReducer,
-    mergeQueryState: mergeQueryReducer,
+    mergeDataInsightsState: mergeDataInsightsReducer,
 });
