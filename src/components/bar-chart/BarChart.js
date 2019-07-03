@@ -22,23 +22,29 @@ class BarChart extends Component {
     constructor() {
         super();
         this.chartRef = React.createRef();
+        this.pullsRequestsArray = []
+        this.callbackFunction = (index) => {
+            return `Pull requests ${this.pullsRequestsArray[index]}`;
+        };
         this.state = {
             _chartContainer: document.getElementById('mergeChart'),
-            _chartAttr: ChartSettings.Bar,
+            _chartAttr: ChartSettings.Bar(this.callbackFunction),
         }
 
     }
 
-    updateChar(newData) {
-        this.chartRef.current.chartInstance.data.datasets[0].data = newData;
+    updateChart(insights) {
+        let newData = [insights.small, insights.medium, insights.large];
+        this.chartRef.current.chartInstance.data.datasets[0].data = newData.map((insightRecord) => { return insightRecord.average });
+        this.pullsRequestsArray = newData.map((insightRecord) => { return insightRecord.pullRequests });
         this.chartRef.current.chartInstance.update();
+
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log(nextProps);
         let insights = nextProps.mergeDataInsightsState;
-        if (insights) {
-            this.updateChar([insights.small, insights.medium, insights.large]);
+        if (insights && this.props.mergeDataInsightsState !== nextProps.mergeDataInsightsState) {
+            this.updateChart(insights);
         }
     }
 

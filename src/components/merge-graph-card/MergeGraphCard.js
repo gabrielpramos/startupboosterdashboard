@@ -29,9 +29,9 @@ const initialState = {
         nodes: []
     },
     insights: {
-        large: 0,
-        medium: 0,
-        small: 0,
+        large: { average: 0, pullRequests: 0 },
+        medium: { average: 0, pullRequests: 0 },
+        small: { average: 0, pullRequests: 0 },
     },
 }
 
@@ -53,28 +53,37 @@ class MergeGraphCard extends Component {
 
     insightGeneration = queryChunkedData => {
         let insights = {
-            large: 0,
-            medium: 0,
-            small: 0,
+            large: { average: 0, pullRequests: 0 },
+            medium: { average: 0, pullRequests: 0 },
+            small: { average: 0, pullRequests: 0 },
         };
 
         let smallSizeMergeTimeArray = queryChunkedData.filter((mergeInfo) => { return mergeInfo.pullRequestSize <= 100 }).map((mergeInfoArray) => { return mergeInfoArray.mergeTime });
-        insights.small = MathUtils.average(smallSizeMergeTimeArray);
+        insights.small = {
+            average: MathUtils.average(smallSizeMergeTimeArray),
+            pullRequests: smallSizeMergeTimeArray.length
+        };
 
         let mediumSizeMergeTimeArray = queryChunkedData.filter((mergeInfo) => { return mergeInfo.pullRequestSize <= 1000 && mergeInfo.pullRequestSize > 100 }).map((mergeInfoArray) => { return mergeInfoArray.mergeTime });
-        insights.medium = MathUtils.average(mediumSizeMergeTimeArray);
+        insights.medium = {
+            average: MathUtils.average(mediumSizeMergeTimeArray),
+            pullRequests: mediumSizeMergeTimeArray.length,
+        };
 
         let largeSizeMergeTimeArray = queryChunkedData.filter((mergeInfo) => { return mergeInfo.pullRequestSize > 1000 }).map((mergeInfoArray) => { return mergeInfoArray.mergeTime });
-        insights.large = MathUtils.average(largeSizeMergeTimeArray);
+        insights.large = {
+            average: MathUtils.average(largeSizeMergeTimeArray),
+            pullRequests: largeSizeMergeTimeArray.length,
+        };
 
         return insights;
     }
 
     fillStateByFetching = (fetchedData) => {
         if (this.nodeFillingCondition()) {
-            this.attState(gitapi.getMerge(this.props.userName, this.props.repositoryName, this.state.data.lastCursor), fetchedData);
+            this.attState(gitapi.getMergeData(this.props.userName, this.props.repositoryName, this.state.data.lastCursor), fetchedData);
         } else {
-            this.attState(gitapi.getMerge(this.props.userName, this.props.repositoryName, this.state.data.lastCursor), fetchedData);
+            this.attState(gitapi.getMergeData(this.props.userName, this.props.repositoryName, this.state.data.lastCursor), fetchedData);
 
             let queryChunkedData = this.state.data.nodes.map((item) => {
                 return {
@@ -121,6 +130,9 @@ class MergeGraphCard extends Component {
                     });
                 }
 
+            } else {
+                this.setState(initialState);
+                this.props.mergeDataInsightsChange(initialState.insights);
             }
         });
     }
@@ -132,7 +144,7 @@ class MergeGraphCard extends Component {
             };
 
             this.setState(initialState, () => {
-                this.attState(gitapi.getMerge(nextProps.userName, nextProps.repositoryName, this.state.data.lastCursor), fetchedData);
+                this.attState(gitapi.getMergeData(nextProps.userName, nextProps.repositoryName, this.state.data.lastCursor), fetchedData);
             });
 
         }
@@ -147,7 +159,7 @@ class MergeGraphCard extends Component {
                 className="box-card"
                 header={
                     <div className="clearfix">
-                        <span style={lineHeight} insights={this.state.insights}>Average Merge Time by Pull Request Size</span>
+                        <span style={lineHeight}>Average Merge Time by Pull Request Size</span>
                     </div>
                 }>
                 <BarChart />
