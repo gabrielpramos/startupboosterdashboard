@@ -11,8 +11,10 @@ export default {
         repositories: repository(name: $repositoryname){
           pullRequests (first:${MAX_ROWS_ALLOWED} states: MERGED after:$after){
             totalCount
+            pageInfo{
+              endCursor
+            }
             edges{
-              cursor
               node{
                 additions
                 deletions
@@ -27,8 +29,10 @@ export default {
         repositories: repository(name: $repositoryname){
           pullRequests (first:${MAX_ROWS_ALLOWED} states: MERGED after:$after){
             totalCount
+            pageInfo{
+              endCursor
+            }
             edges{
-              cursor
               node{
                 additions
                 deletions

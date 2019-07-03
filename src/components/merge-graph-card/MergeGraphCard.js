@@ -117,7 +117,7 @@ class MergeGraphCard extends Component {
                 if (pullRequests.edges.length > 0) {
                     let newState = {
                         data: {
-                            lastCursor: pullRequests.edges[pullRequests.edges.length - 1].cursor,
+                            lastCursor: pullRequests.pageInfo.endCursor,
                             totalCount: pullRequests.totalCount,
                             nodes: nodeArrayConcatnated
                         }
@@ -153,7 +153,7 @@ class MergeGraphCard extends Component {
 
         return (
             <Card
-                className="box-card"
+                className="box-card row-presentation"
                 header={
                     <div className="clearfix">
                         <span style={lineHeight}>Average Merge Time by Pull Request Size</span>

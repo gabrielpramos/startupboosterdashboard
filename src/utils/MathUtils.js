@@ -12,7 +12,7 @@ export default {
     },
     dateDiff(finalDate, initialDate) {
         if (finalDate && initialDate) {
-            return moment(finalDate).diff(moment(initialDate), 'hours');
+            return moment(finalDate).diff(moment(initialDate), 'seconds');
         } else {
             return 0;
         }
