@@ -1,5 +1,11 @@
 export default {
     Bar(callbackFunction) {
+        window.Chart.Tooltip.positioners.custom = function (eventPosition) {
+            return {
+                x: eventPosition.x,
+                y: eventPosition.y
+            };
+        }
         return {
             type: 'bar',
             data: {
@@ -17,8 +23,7 @@ export default {
                     display: false
                 },
                 tooltips: {
-                    position: 'average',
-
+                    position: 'custom',
                     callbacks: {
                         title: function () {
                             return ' ';
