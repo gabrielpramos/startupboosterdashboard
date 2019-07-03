@@ -38,7 +38,6 @@ class BarChart extends Component {
         this.chartRef.current.chartInstance.data.datasets[0].data = newData.map((insightRecord) => { return insightRecord.average });
         this.pullsRequestsArray = newData.map((insightRecord) => { return insightRecord.pullRequests });
         this.chartRef.current.chartInstance.update();
-
     }
 
     componentWillReceiveProps(nextProps) {

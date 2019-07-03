@@ -103,9 +103,6 @@ class MergeGraphCard extends Component {
             this.setState(newState)
 
             this.props.mergeDataInsightsChange(newState.insights);
-
-            console.log(insights);
-
         }
     }
 
@@ -113,7 +110,7 @@ class MergeGraphCard extends Component {
         mergePromise.then(res => {
             fetchedData = res.data.data.user ? res.data.data.user : res.data.data.organization;
 
-            if (fetchedData.repositories) {
+            if (fetchedData && fetchedData.repositories) {
                 let pullRequests = fetchedData.repositories.pullRequests;
                 let nodeArrayConcatnated = this.concatNodeArray(pullRequests.edges);
 
