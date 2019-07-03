@@ -10,7 +10,7 @@ export const repositoryNameChange = value => ({
   value: value
 });
 
-export const mergeQueryChange = value => ({
+export const mergeDataInsightsChange = value => ({
   type: MERGE_QUERY_CHANGE,
   value: value
 });
