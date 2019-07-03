@@ -47,7 +47,7 @@ class RepositorySearchField extends Component {
         const { userName,
             repositoryName } = this.state;
         return (
-            <Card className="box-card">
+            <Card className="box-card row-presentation">
                 <Input placeholder="Type a username or organization" type="text" name="username-field" className="input-field username-field" title="Github username or organization" value={userName} onChange={this.userNameOnChangeHandler} onBlur={() => userNameChange(userName)} />
                 <Input placeholder="Repository" type="text" name="repositoryname-field" className="input-field repositoryname-field" title="Repository" value={repositoryName} onChange={this.repositoryNameOnChangeHandler} onBlur={() => repositoryNameChange(repositoryName)} />
             </Card>

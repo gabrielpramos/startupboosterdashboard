@@ -1,0 +1,6 @@
+.graph-components-container>.box-card>.el-card__body>div.text-item {
+    text-align: center;
+    font-weight: 500;
+    font-size: 32px;
+    padding: 20px;
+}
