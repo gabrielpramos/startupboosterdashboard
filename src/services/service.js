@@ -3,7 +3,7 @@ import request from './request';
 const MAX_ROWS_ALLOWED = 100;
 
 export default {
-  getMerge(userName, repositoryName, cursor = null) {
+  getMergeData(userName, repositoryName, cursor = null) {
     let query = {
       query: `
     query($username : String!, $repositoryname: String!, $after: String) {
