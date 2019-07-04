@@ -5,6 +5,7 @@ import BarChart from '../bar-chart/BarChart';
 import { mergeDataInsightsChange } from '../../actions';
 import './MergeGraphCard.css';
 import MathUtils from '../../utils/MathUtils';
+import DateUtils from '../../utils/DateUtils';
 import utils from '../../utils/utils';
 
 import { connect } from 'react-redux';
@@ -44,10 +45,6 @@ class MergeGraphCard extends Component {
         this.state = initialState;
     }
 
-    concatNodeArray(nodeArray) {
-        return this.state.data.nodes.concat(nodeArray);
-    }
-
     nodeFillingCondition() {
         return this.state.data.nodes.length < this.state.data.totalCount;
     }
@@ -61,19 +58,19 @@ class MergeGraphCard extends Component {
 
         let smallSizeMergeTimeArray = queryChunkedData.filter((mergeInfo) => { return mergeInfo.pullRequestSize <= 100 }).map((mergeInfoArray) => { return mergeInfoArray.mergeTime });
         insights.small = {
-            average: MathUtils.average(smallSizeMergeTimeArray),
+            average: Math.round(MathUtils.average(smallSizeMergeTimeArray)),
             pullRequests: smallSizeMergeTimeArray.length
         };
 
         let mediumSizeMergeTimeArray = queryChunkedData.filter((mergeInfo) => { return mergeInfo.pullRequestSize <= 1000 && mergeInfo.pullRequestSize > 100 }).map((mergeInfoArray) => { return mergeInfoArray.mergeTime });
         insights.medium = {
-            average: MathUtils.average(mediumSizeMergeTimeArray),
+            average: Math.round(MathUtils.average(mediumSizeMergeTimeArray)),
             pullRequests: mediumSizeMergeTimeArray.length,
         };
 
         let largeSizeMergeTimeArray = queryChunkedData.filter((mergeInfo) => { return mergeInfo.pullRequestSize > 1000 }).map((mergeInfoArray) => { return mergeInfoArray.mergeTime });
         insights.large = {
-            average: MathUtils.average(largeSizeMergeTimeArray),
+            average: Math.round(MathUtils.average(largeSizeMergeTimeArray)),
             pullRequests: largeSizeMergeTimeArray.length,
         };
 
@@ -88,7 +85,7 @@ class MergeGraphCard extends Component {
 
             let queryChunkedData = this.state.data.nodes.map((item) => {
                 return {
-                    mergeTime: MathUtils.dateDiff(item.node.mergedAt, item.node.createdAt),
+                    mergeTime: Math.round(DateUtils.dateDiff(item.node.mergedAt, item.node.createdAt)),
                     pullRequestSize: (item.node.additions + item.node.deletions)
                 }
             }
@@ -113,7 +110,7 @@ class MergeGraphCard extends Component {
 
             if (fetchedData && fetchedData.repositories) {
                 let pullRequests = fetchedData.repositories.pullRequests;
-                let nodeArrayConcatenated = utils.concatNodeArray(pullRequests.edges);
+                let nodeArrayConcatenated = utils.concatNodeArray(this.state.data.nodes, pullRequests.edges);
 
                 if (pullRequests.edges.length > 0) {
                     let newState = {
