@@ -16,5 +16,13 @@ export default {
       variables: { "username": userName, "repositoryname": repositoryName, "after": cursor }
     }
     return request().post('', query);
+  },
+
+  getIssueData(userName, repositoryName, cursor = null) {
+    let query = {
+      query: queries.issueQuery,
+      variables: { "username": userName, "repositoryname": repositoryName, "after": cursor }
+    }
+    return request().post('', query);
   }
 };

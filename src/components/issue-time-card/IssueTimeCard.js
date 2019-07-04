@@ -6,10 +6,10 @@ import utils from '../../utils/utils';
 import gitapi from '../../services/service';
 import DateUtils from '../../utils/DateUtils';
 
+
 const mapStateToProps = store => ({
     userName: store.userNameState.value,
     repositoryName: store.repositoryNameState.value,
-    mergeDataInsightsState: store.mergeDataInsightsState.value,
 })
 
 const enhance = compose(
@@ -25,12 +25,11 @@ const initialState = {
     insights: { average: 0 },
 }
 
-class PullRequestTimeCard extends Component {
-
+class IssueTimeCard extends Component {
     constructor() {
         super();
         this.state = initialState;
-        this.title = 'Average Pull Request Merge Time';
+        this.title = 'Average Issue Close Time';
     }
 
     nodeFillingCondition() {
@@ -39,12 +38,12 @@ class PullRequestTimeCard extends Component {
 
     sumAttributeByName = (obj, acc, curr) => {
         return (unitStr) => {
-            if (obj.mergeTime) {
-                obj.mergeTime[unitStr] = acc.mergeTime[unitStr] + curr.mergeTime[unitStr];
+            if (obj.issueCloseTime) {
+                obj.issueCloseTime[unitStr] = acc.issueCloseTime[unitStr] + curr.issueCloseTime[unitStr];
             }
         }
     }
-    reduceMergeTimeArray = timeUnits => {
+    reduceIssueCloseTimeArray = timeUnits => {
         return (acc, curr) => {
             let obj = Object.assign({}, acc);
             if (obj) {
@@ -59,27 +58,27 @@ class PullRequestTimeCard extends Component {
 
         let queryChunkedDataAux = queryChunkedData;
 
-        let timeUnits = Object.keys(queryChunkedData[0].mergeTime);
+        let timeUnits = Object.keys(queryChunkedData[0].issueCloseTime);
 
-        let queryData = queryChunkedDataAux.reduce(this.reduceMergeTimeArray(timeUnits));
+        let queryData = queryChunkedDataAux.reduce(this.reduceIssueCloseTimeArray(timeUnits));
         timeUnits.forEach((timeUnit) => {
-            queryData.mergeTime[timeUnit] = Math.round(queryData.mergeTime[timeUnit] / queryChunkedData.length);
+            queryData.issueCloseTime[timeUnit] = Math.round(queryData.issueCloseTime[timeUnit] / queryChunkedData.length);
         });
 
-        insights.average = queryData.mergeTime;
+        insights.average = queryData.issueCloseTime;
 
         return insights;
     }
 
     fillStateByFetching = (fetchedData) => {
         if (this.nodeFillingCondition()) {
-            this.attState(gitapi.getMergeData(this.props.userName, this.props.repositoryName, this.state.data.lastCursor), fetchedData);
+            this.attState(gitapi.getIssueData(this.props.userName, this.props.repositoryName, this.state.data.lastCursor), fetchedData);
         } else {
-            this.attState(gitapi.getMergeData(this.props.userName, this.props.repositoryName, this.state.data.lastCursor), fetchedData);
+            this.attState(gitapi.getIssueData(this.props.userName, this.props.repositoryName, this.state.data.lastCursor), fetchedData);
 
             let queryChunkedData = this.state.data.nodes.map((item) => {
                 return {
-                    mergeTime: DateUtils.dateDetailedDiff(item.node.mergedAt, item.node.createdAt),
+                    issueCloseTime: DateUtils.dateDetailedDiff(item.node.closedAt, item.node.createdAt),
                 }
             }
             );
@@ -95,19 +94,19 @@ class PullRequestTimeCard extends Component {
         }
     }
 
-    attState = (mergePromise, fetchedData) => {
-        mergePromise.then(res => {
+    attState = (issuesPromise, fetchedData) => {
+        issuesPromise.then(res => {
             fetchedData = res.data.data.user ? res.data.data.user : res.data.data.organization;
 
             if (fetchedData && fetchedData.repositories) {
-                let pullRequests = fetchedData.repositories.pullRequests;
-                let nodeArrayConcatenated = utils.concatNodeArray(this.state.data.nodes, pullRequests.edges);
+                let issues = fetchedData.repositories.issues;
+                let nodeArrayConcatenated = utils.concatNodeArray(this.state.data.nodes, issues.edges);
 
-                if (pullRequests.edges.length > 0) {
+                if (issues.edges.length > 0) {
                     let newState = {
                         data: {
-                            lastCursor: pullRequests.pageInfo.endCursor,
-                            totalCount: pullRequests.totalCount,
+                            lastCursor: issues.pageInfo.endCursor,
+                            totalCount: issues.totalCount,
                             nodes: nodeArrayConcatenated
                         }
                     };
@@ -126,11 +125,11 @@ class PullRequestTimeCard extends Component {
 
         if (this.props.repositoryName !== nextProps.repositoryName && nextProps.userName && nextProps.repositoryName) {
             let fetchedData = {
-                repositories: null
+                issues: null
             };
 
             this.setState(initialState, () => {
-                this.attState(gitapi.getMergeData(nextProps.userName, nextProps.repositoryName, this.state.data.lastCursor), fetchedData);
+                this.attState(gitapi.getIssueData(nextProps.userName, nextProps.repositoryName, this.state.data.lastCursor), fetchedData);
             });
 
         }
@@ -149,4 +148,5 @@ class PullRequestTimeCard extends Component {
         );
     }
 }
-export default enhance(PullRequestTimeCard);
+
+export default enhance(IssueTimeCard);

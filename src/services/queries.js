@@ -4,39 +4,38 @@ const MAX_ROWS_ALLOWED = 100;
 const patternQueryBody = (data) => {
     return `query($username : String!, $repositoryname: String!, $after: String) {
                 user(login: $username){
-                repositories: repository(name: $repositoryname){
-                    pullRequests (first:${MAX_ROWS_ALLOWED} states: MERGED after:$after){
-                    ${data}
-                    }
-                }    
-                organization(login: $username){
-                repositories: repository(name: $repositoryname){
-                    pullRequests (first:${MAX_ROWS_ALLOWED} states: MERGED after:$after){
-                    ${data}
-                }
+                repositories: repository(name: $repositoryname){                    
+                    ${data}                    
                 }
             }
-        }
+                organization(login: $username){
+                repositories: repository(name: $repositoryname){                   
+                    ${data}               
+                }
+            }
     }`;
 }
 
 export default {
     mergeByPullRequestSizeQuery: patternQueryBody(`
-    totalCount
-          pageInfo{
-            endCursor
-          }
-          edges{
-            node{
-                additions
-                deletions
-                createdAt
-                mergedAt
+    pullRequests (first:${MAX_ROWS_ALLOWED} states: MERGED after:$after){
+        totalCount
+            pageInfo{
+                endCursor
             }
-        }
+            edges{
+                node{
+                    additions
+                    deletions
+                    createdAt
+                    mergedAt
+                }
+            }
+    }
     `),
     mergeQuery: patternQueryBody(`
-    totalCount
+    pullRequests (first:${MAX_ROWS_ALLOWED} states: MERGED after:$after){
+        totalCount
           pageInfo{
             endCursor
           }
@@ -46,5 +45,20 @@ export default {
               mergedAt
             }
         }
+    }
+    `),
+    issueQuery: patternQueryBody(`
+    issues (first:${MAX_ROWS_ALLOWED} after:$after){
+        totalCount
+          pageInfo{
+            endCursor
+          }
+          edges{
+            node{
+              createdAt
+              closedAt
+            }
+        }
+    }
     `),
 }
