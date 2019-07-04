@@ -12,7 +12,7 @@ export default {
 
   getMergeData(userName, repositoryName, cursor = null) {
     let query = {
-      query: queries.mergeByPullRequestSizeQuery,
+      query: queries.mergeQuery,
       variables: { "username": userName, "repositoryname": repositoryName, "after": cursor }
     }
     return request().post('', query);

@@ -1,5 +1,5 @@
 export default {
-    concatNodeArray(nodeArray) {
-        return this.state.data.nodes.concat(nodeArray);
+    concatNodeArray(stateNodeArray, newNodeArray) {
+        return stateNodeArray.concat(newNodeArray);
     },
 }
