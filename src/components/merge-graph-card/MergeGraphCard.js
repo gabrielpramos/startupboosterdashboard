@@ -5,6 +5,8 @@ import BarChart from '../bar-chart/BarChart';
 import { mergeDataInsightsChange } from '../../actions';
 import './MergeGraphCard.css';
 import MathUtils from '../../utils/MathUtils';
+import DateUtils from '../../utils/DateUtils';
+import utils from '../../utils/utils';
 
 import { connect } from 'react-redux';
 import { bindActionCreators, compose } from 'redux';
@@ -43,10 +45,6 @@ class MergeGraphCard extends Component {
         this.state = initialState;
     }
 
-    concatNodeArray(nodeArray) {
-        return this.state.data.nodes.concat(nodeArray);
-    }
-
     nodeFillingCondition() {
         return this.state.data.nodes.length < this.state.data.totalCount;
     }
@@ -60,19 +58,19 @@ class MergeGraphCard extends Component {
 
         let smallSizeMergeTimeArray = queryChunkedData.filter((mergeInfo) => { return mergeInfo.pullRequestSize <= 100 }).map((mergeInfoArray) => { return mergeInfoArray.mergeTime });
         insights.small = {
-            average: MathUtils.average(smallSizeMergeTimeArray),
+            average: Math.round(MathUtils.average(smallSizeMergeTimeArray)),
             pullRequests: smallSizeMergeTimeArray.length
         };
 
         let mediumSizeMergeTimeArray = queryChunkedData.filter((mergeInfo) => { return mergeInfo.pullRequestSize <= 1000 && mergeInfo.pullRequestSize > 100 }).map((mergeInfoArray) => { return mergeInfoArray.mergeTime });
         insights.medium = {
-            average: MathUtils.average(mediumSizeMergeTimeArray),
+            average: Math.round(MathUtils.average(mediumSizeMergeTimeArray)),
             pullRequests: mediumSizeMergeTimeArray.length,
         };
 
         let largeSizeMergeTimeArray = queryChunkedData.filter((mergeInfo) => { return mergeInfo.pullRequestSize > 1000 }).map((mergeInfoArray) => { return mergeInfoArray.mergeTime });
         insights.large = {
-            average: MathUtils.average(largeSizeMergeTimeArray),
+            average: Math.round(MathUtils.average(largeSizeMergeTimeArray)),
             pullRequests: largeSizeMergeTimeArray.length,
         };
 
@@ -81,13 +79,13 @@ class MergeGraphCard extends Component {
 
     fillStateByFetching = (fetchedData) => {
         if (this.nodeFillingCondition()) {
-            this.attState(gitapi.getMergeData(this.props.userName, this.props.repositoryName, this.state.data.lastCursor), fetchedData);
+            this.attState(gitapi.getMergeByPullRequestSize(this.props.userName, this.props.repositoryName, this.state.data.lastCursor), fetchedData);
         } else {
-            this.attState(gitapi.getMergeData(this.props.userName, this.props.repositoryName, this.state.data.lastCursor), fetchedData);
+            this.attState(gitapi.getMergeByPullRequestSize(this.props.userName, this.props.repositoryName, this.state.data.lastCursor), fetchedData);
 
             let queryChunkedData = this.state.data.nodes.map((item) => {
                 return {
-                    mergeTime: MathUtils.dateDiff(item.node.mergedAt, item.node.createdAt),
+                    mergeTime: Math.round(DateUtils.dateDiff(item.node.mergedAt, item.node.createdAt)),
                     pullRequestSize: (item.node.additions + item.node.deletions)
                 }
             }
@@ -112,14 +110,14 @@ class MergeGraphCard extends Component {
 
             if (fetchedData && fetchedData.repositories) {
                 let pullRequests = fetchedData.repositories.pullRequests;
-                let nodeArrayConcatnated = this.concatNodeArray(pullRequests.edges);
+                let nodeArrayConcatenated = utils.concatNodeArray(this.state.data.nodes, pullRequests.edges);
 
                 if (pullRequests.edges.length > 0) {
                     let newState = {
                         data: {
-                            lastCursor: pullRequests.edges[pullRequests.edges.length - 1].cursor,
+                            lastCursor: pullRequests.pageInfo.endCursor,
                             totalCount: pullRequests.totalCount,
-                            nodes: nodeArrayConcatnated
+                            nodes: nodeArrayConcatenated
                         }
                     };
                     this.setState(newState, () => {
@@ -135,13 +133,13 @@ class MergeGraphCard extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.repositoryName !== nextProps.repositoryName && nextProps.repositoryName) {
+        if (this.props.repositoryName !== nextProps.repositoryName && nextProps.userName && nextProps.repositoryName) {
             let fetchedData = {
                 repositories: null
             };
 
             this.setState(initialState, () => {
-                this.attState(gitapi.getMergeData(nextProps.userName, nextProps.repositoryName, this.state.data.lastCursor), fetchedData);
+                this.attState(gitapi.getMergeByPullRequestSize(nextProps.userName, nextProps.repositoryName, this.state.data.lastCursor), fetchedData);
             });
 
         }
@@ -153,7 +151,7 @@ class MergeGraphCard extends Component {
 
         return (
             <Card
-                className="box-card"
+                className="box-card row-presentation"
                 header={
                     <div className="clearfix">
                         <span style={lineHeight}>Average Merge Time by Pull Request Size</span>

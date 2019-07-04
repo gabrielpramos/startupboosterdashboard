@@ -1,7 +1,4 @@
 
-
-import * as moment from 'moment';
-
 export default {
     average(arrayParam) {
         if (arrayParam && arrayParam.length > 0) {
@@ -9,12 +6,5 @@ export default {
         } else {
             return 0;
         }
-    },
-    dateDiff(finalDate, initialDate) {
-        if (finalDate && initialDate) {
-            return moment(finalDate).diff(moment(initialDate), 'hours');
-        } else {
-            return 0;
-        }
-    }
+    },    
 }

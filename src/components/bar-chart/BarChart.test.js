@@ -4,14 +4,13 @@ import BarChart from './BarChart';
 import { Provider } from 'react-redux';
 import { Store } from '../../store';
 
-const barchart = shallow(<BarChart />);
+const barchart = shallow(<Provider store={Store}><BarChart /></Provider>);
 
 it('renders without crashing', () => {
     expect(barchart).toMatchSnapshot();
 });
 
 it('loads the barchart', () => {
-    const barchartWrapper = mount(<BarChart />);
-    console.log(barchartWrapper.debug());
+    const barchartWrapper = mount(<Provider store={Store}><BarChart /></Provider>);
     expect(barchartWrapper).toMatchSnapshot();
 });
