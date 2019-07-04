@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import gitapi from '../../services/service';
 import { Card } from 'element-react';
 import './SimpleInfoCard.css';
 
@@ -15,15 +14,6 @@ const enhance = compose(
 );
 
 class SimpleInfoCard extends Component {
-
-    componentWillReceiveProps(nextProp) {
-        this.attCard(nextProp);
-    }
-
-    attCard(nextProp) {
-
-    }
-
     render() {
         return (
             <Card className="box-card half-row-presentation"

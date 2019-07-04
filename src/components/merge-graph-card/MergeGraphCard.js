@@ -5,6 +5,7 @@ import BarChart from '../bar-chart/BarChart';
 import { mergeDataInsightsChange } from '../../actions';
 import './MergeGraphCard.css';
 import MathUtils from '../../utils/MathUtils';
+import utils from '../../utils/utils';
 
 import { connect } from 'react-redux';
 import { bindActionCreators, compose } from 'redux';
@@ -81,9 +82,9 @@ class MergeGraphCard extends Component {
 
     fillStateByFetching = (fetchedData) => {
         if (this.nodeFillingCondition()) {
-            this.attState(gitapi.getMergeData(this.props.userName, this.props.repositoryName, this.state.data.lastCursor), fetchedData);
+            this.attState(gitapi.getMergeByPullRequestSize(this.props.userName, this.props.repositoryName, this.state.data.lastCursor), fetchedData);
         } else {
-            this.attState(gitapi.getMergeData(this.props.userName, this.props.repositoryName, this.state.data.lastCursor), fetchedData);
+            this.attState(gitapi.getMergeByPullRequestSize(this.props.userName, this.props.repositoryName, this.state.data.lastCursor), fetchedData);
 
             let queryChunkedData = this.state.data.nodes.map((item) => {
                 return {
@@ -112,14 +113,14 @@ class MergeGraphCard extends Component {
 
             if (fetchedData && fetchedData.repositories) {
                 let pullRequests = fetchedData.repositories.pullRequests;
-                let nodeArrayConcatnated = this.concatNodeArray(pullRequests.edges);
+                let nodeArrayConcatenated = utils.concatNodeArray(pullRequests.edges);
 
                 if (pullRequests.edges.length > 0) {
                     let newState = {
                         data: {
                             lastCursor: pullRequests.pageInfo.endCursor,
                             totalCount: pullRequests.totalCount,
-                            nodes: nodeArrayConcatnated
+                            nodes: nodeArrayConcatenated
                         }
                     };
                     this.setState(newState, () => {
@@ -135,13 +136,13 @@ class MergeGraphCard extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.repositoryName !== nextProps.repositoryName && nextProps.repositoryName) {
+        if (this.props.repositoryName !== nextProps.repositoryName && nextProps.userName && nextProps.repositoryName) {
             let fetchedData = {
                 repositories: null
             };
 
             this.setState(initialState, () => {
-                this.attState(gitapi.getMergeData(nextProps.userName, nextProps.repositoryName, this.state.data.lastCursor), fetchedData);
+                this.attState(gitapi.getMergeByPullRequestSize(nextProps.userName, nextProps.repositoryName, this.state.data.lastCursor), fetchedData);
             });
 
         }
