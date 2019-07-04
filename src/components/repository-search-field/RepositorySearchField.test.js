@@ -20,7 +20,7 @@ it("changes the component's user name attribute when username input changes", ()
     userNameField.simulate('change', { target: { value: 'pereirowsk' } });
     userNameField.simulate('blur');
 
-    expect(repositorySearchField.prop('store').getState().userNameState.userName).toEqual('pereirowsk');
+    expect(repositorySearchField.prop('store').getState().userNameState.value).toEqual('pereirowsk');
 });
 
 it("changes the component's repository attribute when repositoryname input changes", () => {
@@ -29,5 +29,5 @@ it("changes the component's repository attribute when repositoryname input chang
     repositoryNameField.simulate('change', { target: { value: 'Sentinela' } });
     repositoryNameField.simulate('blur');
 
-    expect(repositorySearchField.prop('store').getState().repositoryNameState.repositoryName).toEqual('Sentinela');
+    expect(repositorySearchField.prop('store').getState().repositoryNameState.value).toEqual('Sentinela');
 }); 

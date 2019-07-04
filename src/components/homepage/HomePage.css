@@ -1,9 +1,36 @@
 .component-container {
-    height: 100%;
+    height: auto;
     width: 80%;
     display: block;
 }
 
 .graph-components-container {
-    padding: 20px 45px;
+    padding: 0px 30px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+div.graph-components-container>div.box-card>div.el-card__header {
+    padding: 8px 20px;
+    font-weight: 500;
+    color: #525252;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+div.graph-components-container>div.box-card {
+    margin: 20px 0px;
+}
+
+div.graph-components-container>div.box-card.row-presentation {
+    width: 100%;
+}
+
+div.graph-components-container>div.box-card.half-row-presentation {
+    width: 48%;
+}
+
+div.graph-components-container div.el-card {
+    border: none;
+    box-shadow: 6px 9px 6px -8px rgba(0, 0, 0, 0.15);
 }

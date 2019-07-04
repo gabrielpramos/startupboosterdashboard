@@ -6,8 +6,6 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 
 const mapStateToProps = store => ({
-    userName: store.userNameState.value,
-    repositoryName: store.repositoryNameState.value,
     mergeDataInsightsState: store.mergeDataInsightsState.value,
 
 })

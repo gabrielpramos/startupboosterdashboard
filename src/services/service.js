@@ -1,45 +1,26 @@
 import request from './request';
-
-const MAX_ROWS_ALLOWED = 100;
+import queries from './queries';
 
 export default {
+  getMergeByPullRequestSize(userName, repositoryName, cursor = null) {
+    let query = {
+      query: queries.mergeByPullRequestSizeQuery,
+      variables: { "username": userName, "repositoryname": repositoryName, "after": cursor }
+    }
+    return request().post('', query);
+  },
+
   getMergeData(userName, repositoryName, cursor = null) {
     let query = {
-      query: `
-    query($username : String!, $repositoryname: String!, $after: String) {
-      user(login: $username){
-        repositories: repository(name: $repositoryname){
-          pullRequests (first:${MAX_ROWS_ALLOWED} states: MERGED after:$after){
-            totalCount
-            edges{
-              cursor
-              node{
-                additions
-                deletions
-                createdAt
-                mergedAt
-              }
-            }
-          }
-        }
-      }
-      organization(login: $username){
-        repositories: repository(name: $repositoryname){
-          pullRequests (first:${MAX_ROWS_ALLOWED} states: MERGED after:$after){
-            totalCount
-            edges{
-              cursor
-              node{
-                additions
-                deletions
-                createdAt
-                mergedAt
-              }
-            }
-          }
-        }
-      }
-    }`,
+      query: queries.mergeQuery,
+      variables: { "username": userName, "repositoryname": repositoryName, "after": cursor }
+    }
+    return request().post('', query);
+  },
+
+  getIssueData(userName, repositoryName, cursor = null) {
+    let query = {
+      query: queries.issueQuery,
       variables: { "username": userName, "repositoryname": repositoryName, "after": cursor }
     }
     return request().post('', query);

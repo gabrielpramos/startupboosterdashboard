@@ -1,5 +1,4 @@
-//types
-import { CHANGE_USER_NAME, CHANGE_REPOSITORY_NAME, MERGE_QUERY_CHANGE } from '../actions/actionTypes';
+import { CHANGE_USER_NAME, CHANGE_REPOSITORY_NAME, MERGE_DATA_INSIGHTS, PULL_REQUEST_DATA_INSIGHTS } from '../actions/actionTypes';
 import { combineReducers } from 'redux';
 
 const initialUserState = {
@@ -9,10 +8,14 @@ const initialRepositoryState = {
     value: '',
 }
 const initialMergeDataInsightsState = {
-    data: {
-        lastCursor: null,
-        totalCount: 0,
-        nodes: []
+    large: { average: 0, pullRequests: 0 },
+    medium: { average: 0, pullRequests: 0 },
+    small: { average: 0, pullRequests: 0 },
+}
+
+const initialPullReQuestTimeState = {
+    insights: {
+        average: 0
     }
 }
 
@@ -42,10 +45,22 @@ export const repositoryNameReducer = (state = initialRepositoryState, action) =>
 
 export const mergeDataInsightsReducer = (state = initialMergeDataInsightsState, action) => {
     switch (action.type) {
-        case MERGE_QUERY_CHANGE:
+        case MERGE_DATA_INSIGHTS:
             return {
                 ...state,
                 value: action.value
+            };
+        default:
+            return state;
+    }
+}
+
+export const pullRequestDataInsightsReducer = (state = initialPullReQuestTimeState, action) => {
+    switch (action.type) {
+        case PULL_REQUEST_DATA_INSIGHTS:
+            return {
+                ...state,
+                value: action
             };
         default:
             return state;
@@ -56,4 +71,5 @@ export const Reducers = combineReducers({
     userNameState: userNameReducer,
     repositoryNameState: repositoryNameReducer,
     mergeDataInsightsState: mergeDataInsightsReducer,
+    pullRequestDataInsightsState: pullRequestDataInsightsReducer
 });

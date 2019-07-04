@@ -1,6 +1,7 @@
 export default {
     Bar(callbackFunction) {
-        window.Chart.Tooltip.positioners.custom = function (eventPosition) {
+        window.Chart.Tooltip.positioners.custom = function (elements, eventPosition) {
+
             return {
                 x: eventPosition.x,
                 y: eventPosition.y
