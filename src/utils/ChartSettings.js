@@ -7,6 +7,16 @@ window.Chart.Tooltip.positioners.custom = function (elements, eventPosition) {
 }
 
 export default {
+    lineTemplateDataset: {
+        label: 'merged',
+        backgroundColor: 'green',
+        data: [],
+        fill: false,
+        borderColor: 'green',
+        borderWidth: 1.5,
+        pointRadius: 0,
+
+    },
     Bar(callbackFunction) {
         return {
             type: 'bar',
@@ -88,36 +98,74 @@ export default {
         return {
             type: 'line',
             data: {
+                labels: [],
                 datasets: [{
-                    backgroundColor: '#4b9bff',
-                    data: [10],
-
+                    label: 'opened',
+                    backgroundColor: '#13c600',
+                    data: [],
+                    fill: false,
+                    borderColor: '#13c600',
+                    borderWidth: 2,
+                    pointRadius: 1,
+                    pointBorderColor: 'rgba(0, 0, 0, 0)',
+                    pointBackgroundColor: 'rgba(0, 0, 0, 0)',
+                    pointHoverBackgroundColor: '#13c600',
+                    pointHoverBorderColor: 'rgb(0, 0, 0, 0)'
                 },
                 {
-                    backgroundColor: 'red',
-                    data: [10],
 
-                }]
+                    label: 'closed',
+                    backgroundColor: '#ff3a00',
+                    data: [],
+                    fill: false,
+                    borderColor: '#ff3a00',
+                    borderWidth: 2,
+                    pointRadius: 1,
+                    pointBorderColor: 'rgba(0, 0, 0, 0)',
+                    pointBackgroundColor: 'rgba(0, 0, 0, 0)',
+                    pointHoverBackgroundColor: '#ff3a00',
+                    pointHoverBorderColor: 'rgb(0, 0, 0, 0)'
+                },
+                {
+                    label: 'merged',
+                    backgroundColor: '#b20bff',
+                    data: [],
+                    fill: false,
+                    borderColor: '#b20bff',
+                    borderWidth: 2,
+                    pointRadius: 1,
+                    pointBorderColor: 'rgba(0, 0, 0, 0)',
+                    pointBackgroundColor: 'rgba(0, 0, 0, 0)',
+                    pointHoverBackgroundColor: '#b20bff',
+                    pointHoverBorderColor: 'rgb(0, 0, 0, 0)'
+                }
+                ]
             },
             options: {
-                maintainAspectRatio: false,
+                maintainAspectRatio: true,
                 responsive: true,
                 legend: {
-                    position: 'bottom'
+                    position: 'bottom',
+                    labels: {
+                        usePointStyle: true,
+                    }
+                },
+                elements: {
+                    line: {
+                        tension: 0,
+                        bezierCurve: false,
+                    }
+                },
+                hover: {
+                    intersect: false,
                 },
                 tooltips: {
-                    position: 'custom',
                     callbacks: {
                         title: function () {
                             return ' ';
                         },
                         label: function (tooltipItem, data) {
-                            return `Average Time    ${data['datasets'][0]['data'][tooltipItem['index']]}h`;
-                        },
-                        afterLabel: function (tooltipItem, data) {
-
-                            return callbackFunction(tooltipItem['index']);
-
+                            return `  ${data['datasets'][tooltipItem.datasetIndex]['label']}    ${data['datasets'][tooltipItem.datasetIndex]['data'][tooltipItem['index']]}`;
                         },
                         footer: function () {
                             return ' ';
@@ -128,7 +176,6 @@ export default {
                     bodyFontColor: '#000',
                     bodyFontSize: 14,
                     cornerRadius: 3,
-                    displayColors: false,
                     titleFontSize: 5,
                     footerFontSize: 5,
                     bodySpacing: 10,
@@ -136,17 +183,17 @@ export default {
                     shadowOffsetY: 2,
                     shadowBlur: 5,
                     shadowSpread: 1,
-                    shadowColor: 'rgba(0, 0, 0, 0.1)'
+                    shadowColor: 'rgba(0, 0, 0, 0.1)',
                 },
                 scales: {
                     yAxes: [{
                         ticks: {
-                            max: 100,
+                            max: 48,
                             min: 0,
                             stepSize: 8,
                             padding: 15,
                             callback: function (value, index, values) {
-                                return `${value}`;
+                                return `${value}h`;
                             },
 
                         },
@@ -159,8 +206,6 @@ export default {
                     xAxes: [{
                         gridLines: {
                             display: true,
-                            borderDash: [2, 3],
-                            drawTicks: false,
                         }
                     }]
                 }

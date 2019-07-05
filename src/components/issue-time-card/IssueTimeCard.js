@@ -138,6 +138,8 @@ class IssueTimeCard extends Component {
         let cardValue = '';
         if (this.state.insights.average !== undefined) {
             cardValue = `${DateUtils.humanizeTime(average.days, 'days', 'day')} ${DateUtils.humanizeTime(average.hours, 'hours', false, 'h')}${DateUtils.humanizeTime(average.minutes, 'minutes', false, 'm')}`;
+        } else {
+            cardValue = 'There are no issues to show';
         }
 
         return (

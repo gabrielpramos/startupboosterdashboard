@@ -8,6 +8,7 @@ import SimpleInfoMenuItem from '../simple-info-menu-item/SimpleInfoMenuItem';
 import { monthSummaryInsightsChange } from '../../actions'
 import * as moment from 'moment';
 import LineChart from '../line-chart/LineChart';
+import './MonthSummaryPanel.css';
 
 const mapStateToProps = store => ({
     userName: store.userNameState.value,
@@ -40,8 +41,8 @@ const initialState = {
             nodes: [],
         },
         insights: { average: 0, opened: {}, closed: {} },
-    }
-
+    },
+    tabIndex: 0,
 };
 
 const title = 'Month Summary';
@@ -60,6 +61,10 @@ export class MonthSummaryPanel extends Component {
     queryDataInsightGeneration = (queryChunkedPullRequestsData, totalCountRef, averageMarker) => {
         let insights = { average: 0, opened: {}, closed: {}, merged: {} };
 
+        if (queryChunkedPullRequestsData.length === 0) {
+            return insights;
+        }
+
         let queryChunkedPullRequestsDataAux = Object.assign([], queryChunkedPullRequestsData);
         let status = Object.keys(queryChunkedPullRequestsDataAux[0]);
         let daysByStatus = {};
@@ -76,7 +81,7 @@ export class MonthSummaryPanel extends Component {
 
         let quantity = Object.keys(daysByStatus[averageMarker]).length;
 
-        insights.average = totalCountRef.totalCount / quantity;
+        insights.average = Math.round(totalCountRef.totalCount / quantity);
         status.forEach((status) => {
             insights[status] = daysByStatus[status];
         })
@@ -177,26 +182,30 @@ export class MonthSummaryPanel extends Component {
     }
 
     onSelectHandler = index => {
-        console.log(index);
+        this.setState({
+            pullRequests: this.state.pullRequests,
+            issues: this.state.issues,
+            tabIndex: index
+        });
     }
 
     render() {
         return (
             <Card className="box-card row-presentation"
                 header={
-                    <div className="clearfix">
+                    < div className="clearfix" >
                         <span style={{ "lineHeight": "36px" }}>{title}</span>
                     </div>
                 }>
                 < Menu defaultActive="0" className="el-menu-demo" mode="horizontal" onSelect={this.onSelectHandler.bind(this)}>
                     <Menu.Item index="0">
-                        <SimpleInfoMenuItem itemHeader={'Pull Requests'} itemBody={'38'} />
+                        <SimpleInfoMenuItem itemHeader={'Pull Requests'} itemBody={this.state.pullRequests.insights.average} />
                     </Menu.Item>
                     <Menu.Item index="1">
-                        <SimpleInfoMenuItem itemHeader={'Issues'} itemBody={'60'} />
+                        <SimpleInfoMenuItem itemHeader={'Issues'} itemBody={this.state.issues.insights.average} />
                     </Menu.Item>
                 </Menu>
-                <LineChart />
+                <LineChart insightTarget={parseInt(this.state.tabIndex, 10) === 0 ? 'pullRequests' : 'issues'} />
             </Card >
 
         );

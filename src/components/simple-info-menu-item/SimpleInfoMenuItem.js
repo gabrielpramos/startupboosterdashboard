@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
+import './SimpleInfoMenuItem.css';
 
 class SimpleInfoMenuItem extends Component {
 
     render() {
         return (
-            <div>
-                <span>{this.props.itemHeader}</span>
-                <span>{this.props.itemBody}</span>
+            <div className="tab-text-container">
+                <div className="tab-header">
+                    {this.props.itemHeader}
+                    <span className="tab-text-container">{this.props.itemBody}</span>
+                </div>
+
             </div>
         );
     }

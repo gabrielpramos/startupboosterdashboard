@@ -4,7 +4,7 @@ import * as moment from 'moment';
 export default {
     dateDiff(finalDate, initialDate) {
         if (finalDate && initialDate) {
-            return moment(finalDate).diff(moment(initialDate), 'seconds');
+            return moment(finalDate).diff(moment(initialDate), 'hours');
         } else {
             return 0;
         }
