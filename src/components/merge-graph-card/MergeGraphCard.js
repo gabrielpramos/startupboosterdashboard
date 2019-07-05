@@ -77,11 +77,11 @@ class MergeGraphCard extends Component {
         return insights;
     }
 
-    fillStateByFetching = (fetchedData) => {
+    fillStateByFetching = () => {
         if (this.nodeFillingCondition()) {
-            this.attState(gitapi.getMergeByPullRequestSize(this.props.userName, this.props.repositoryName, this.state.data.lastCursor), fetchedData);
+            this.attState(gitapi.getMergeByPullRequestSize(this.props.userName, this.props.repositoryName, this.state.data.lastCursor));
         } else {
-            this.attState(gitapi.getMergeByPullRequestSize(this.props.userName, this.props.repositoryName, this.state.data.lastCursor), fetchedData);
+            this.attState(gitapi.getMergeByPullRequestSize(this.props.userName, this.props.repositoryName, this.state.data.lastCursor));
 
             let queryChunkedData = this.state.data.nodes.map((item) => {
                 return {
@@ -104,9 +104,9 @@ class MergeGraphCard extends Component {
         }
     }
 
-    attState = (mergePromise, fetchedData) => {
+    attState = (mergePromise) => {
         mergePromise.then(res => {
-            fetchedData = res.data.data.user ? res.data.data.user : res.data.data.organization;
+            let fetchedData = res.data.data.user ? res.data.data.user : res.data.data.organization;
 
             if (fetchedData && fetchedData.repositories) {
                 let pullRequests = fetchedData.repositories.pullRequests;
@@ -121,7 +121,7 @@ class MergeGraphCard extends Component {
                         }
                     };
                     this.setState(newState, () => {
-                        this.fillStateByFetching(fetchedData);
+                        this.fillStateByFetching();
                     });
                 }
 
@@ -134,12 +134,9 @@ class MergeGraphCard extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (this.props.repositoryName !== nextProps.repositoryName && nextProps.userName && nextProps.repositoryName) {
-            let fetchedData = {
-                repositories: null
-            };
-
+       
             this.setState(initialState, () => {
-                this.attState(gitapi.getMergeByPullRequestSize(nextProps.userName, nextProps.repositoryName, this.state.data.lastCursor), fetchedData);
+                this.attState(gitapi.getMergeByPullRequestSize(nextProps.userName, nextProps.repositoryName, this.state.data.lastCursor));
             });
 
         }

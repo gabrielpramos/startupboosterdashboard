@@ -1,4 +1,4 @@
-import { CHANGE_USER_NAME, CHANGE_REPOSITORY_NAME, MERGE_DATA_INSIGHTS, PULL_REQUEST_DATA_INSIGHTS } from '../actions/actionTypes';
+import { CHANGE_USER_NAME, CHANGE_REPOSITORY_NAME, MERGE_DATA_INSIGHTS, PULL_REQUEST_DATA_INSIGHTS, MONTH_SUMMARY_INSIGHTS } from '../actions/actionTypes';
 
 export const userNameChange = value => ({
   type: CHANGE_USER_NAME,
@@ -17,5 +17,10 @@ export const mergeDataInsightsChange = value => ({
 
 export const pullRequestDataInsightsChange = value => ({
   type: PULL_REQUEST_DATA_INSIGHTS,
+  value: value
+});
+
+export const monthSummaryInsightsChange = value => ({
+  type: MONTH_SUMMARY_INSIGHTS,
   value: value
 });

@@ -24,5 +24,13 @@ export default {
       variables: { "username": userName, "repositoryname": repositoryName, "after": cursor }
     }
     return request().post('', query);
+  },
+
+  getMonthSummaryData(userName, repositoryName, pullRequestsCursor = null, issueRequestsCursor = null) {
+    let query = {
+      query: queries.monthSummaryQuery,
+      variables: { "username": userName, "repositoryname": repositoryName, "pullRequestsCursor": pullRequestsCursor, "issueRequestsCursor": issueRequestsCursor }
+    }
+    return request().post('', query);
   }
 };
