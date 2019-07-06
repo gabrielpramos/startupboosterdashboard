@@ -5,6 +5,7 @@ import { compose } from 'redux';
 import utils from '../../utils/utils';
 import gitapi from '../../services/service';
 import DateUtils from '../../utils/DateUtils';
+import './PullRequestTimeCard.css';
 
 const mapStateToProps = store => ({
     userName: store.userNameState.value,
@@ -124,7 +125,7 @@ class PullRequestTimeCard extends Component {
 
     componentWillReceiveProps(nextProps) {
 
-        if (this.props.repositoryName !== nextProps.repositoryName && nextProps.userName && nextProps.repositoryName) {
+        if ((this.props.repositoryName !== nextProps.repositoryName || this.props.userName !== nextProps.userName) && nextProps.userName && nextProps.repositoryName) {
             let fetchedData = {
                 repositories: null
             };
@@ -140,8 +141,10 @@ class PullRequestTimeCard extends Component {
 
         let average = this.state.insights.average;
         let cardValue = '';
-        if (this.state.insights.average !== undefined) {
+        if (this.state.insights.average !== 0) {
             cardValue = `${DateUtils.humanizeTime(average.days, 'days', 'day')} ${DateUtils.humanizeTime(average.hours, 'hours', false, 'h')}${DateUtils.humanizeTime(average.minutes, 'minutes', false, 'm')}`;
+        } else if (this.props.repositoryName !== '' && this.state.insights.average === 0) {
+            cardValue = 'There are no pull requests to show';
         }
 
         return (

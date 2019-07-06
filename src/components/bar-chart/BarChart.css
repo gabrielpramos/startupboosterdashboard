@@ -1,0 +1,5 @@
+@media screen and (max-width: 768px) {
+    div.graph-components-container>div.box-card>.el-card__body>canvas {
+        max-height: 275px;
+    }
+}

@@ -4,6 +4,7 @@ import './HomePage.css';
 import MergeGraphCard from '../merge-graph-card/MergeGraphCard';
 import PullRequestTimeCard from '../pull-request-time-card/PullRequestTimeCard';
 import IssueTimeCard from '../issue-time-card/IssueTimeCard';
+import MonthSummaryPanel from '../month-summary-panel/MonthSummaryPanel';
 
 class HomePage extends Component {
     render() {
@@ -14,6 +15,7 @@ class HomePage extends Component {
                     <MergeGraphCard />
                     <PullRequestTimeCard />
                     <IssueTimeCard />
+                    <MonthSummaryPanel />
                 </div>
             </div>
         );
