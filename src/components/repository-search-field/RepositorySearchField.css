@@ -23,3 +23,10 @@
     font-weight: 600;
     height: 24px;
 }
+
+@media only screen and (max-width: 825px) {
+    .component-container>.el-card .username-field>input {
+        font-size: 13px;
+        font-weight: 600;
+    }
+}

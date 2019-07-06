@@ -16,3 +16,7 @@
 .el-card__body>.el-menu {
     background-color: #fff;
 }
+
+.el-card__body>.el-menu--horizontal {
+    margin-bottom: 25px;
+}

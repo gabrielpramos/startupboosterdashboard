@@ -4,3 +4,16 @@
     font-size: 32px;
     padding: 20px;
 }
+
+@media screen and (max-width: 425px) {
+    .graph-components-container>.box-card>.el-card__body {
+        padding: 5px;
+    }
+}
+
+@media screen and (max-width: 425px) and (min-width: 320px) {
+    .graph-components-container>.box-card>.el-card__body>div.text-item {
+        font-size: 28px;
+        padding: 0px;
+    }
+}

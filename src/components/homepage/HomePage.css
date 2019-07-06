@@ -2,6 +2,7 @@
     height: auto;
     width: 80%;
     display: block;
+    overflow-x: hidden;
 }
 
 .graph-components-container {
@@ -27,10 +28,30 @@ div.graph-components-container>div.box-card.row-presentation {
 }
 
 div.graph-components-container>div.box-card.half-row-presentation {
+    height: 220px;
     width: 48%;
 }
 
 div.graph-components-container div.el-card {
     border: none;
     box-shadow: 6px 9px 6px -8px rgba(0, 0, 0, 0.15);
+}
+
+@media only screen and (max-width:643px) {
+    div.graph-components-container>div.box-card.half-row-presentation {
+        width: 100%;
+    }
+}
+
+@media only screen and (max-width: 425px) and (min-width: 321px) {
+    .component-container {
+        width: 95.5%;        
+    }
+}
+
+@media only screen and (max-width: 320px) {
+    .component-container {
+        max-width: 302px;
+        width: 100%;
+    }
 }

@@ -1,0 +1,7 @@
+@media only screen and (max-width: 825px) {
+    .graph-components-container>.box-card>.el-card__header {
+        font-size: 12px;
+        padding: 8px 20px;
+        font-weight: 700;
+    }
+}
