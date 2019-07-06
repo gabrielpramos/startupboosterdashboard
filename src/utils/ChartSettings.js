@@ -9,13 +9,16 @@ window.Chart.Tooltip.positioners.custom = function (elements, eventPosition) {
 export default {
     lineTemplateDataset: {
         label: 'merged',
-        backgroundColor: 'green',
+        backgroundColor: '#b20bff',
         data: [],
         fill: false,
-        borderColor: 'green',
-        borderWidth: 1.5,
-        pointRadius: 0,
-
+        borderColor: '#b20bff',
+        borderWidth: 2,
+        pointRadius: 1,
+        pointBorderColor: 'rgba(0, 0, 0, 0)',
+        pointBackgroundColor: 'rgba(0, 0, 0, 0)',
+        pointHoverBackgroundColor: '#b20bff',
+        pointHoverBorderColor: 'rgb(0, 0, 0, 0)'
     },
     Bar(callbackFunction) {
         return {
@@ -188,9 +191,9 @@ export default {
                 scales: {
                     yAxes: [{
                         ticks: {
-                            max: 48,
+                            max: 100,
                             min: 0,
-                            stepSize: 8,
+                            stepSize: 25,
                             padding: 15,
                             callback: function (value, index, values) {
                                 return `${value}h`;

@@ -59,7 +59,7 @@ class LineChart extends Component {
 
                 Object.keys(newData[insight]).forEach((day) => {
 
-                    let prepareDate = `${day.split('/').reverse().join('-')}`;
+                    let prepareDate = `${moment().year()}-${day.split('/').reverse().join('-')}`;
 
                     if (moment(prepareDate).format('DD MMM') === date) {
                         this.values[indexLabel] = newData[insight][day];
@@ -105,7 +105,7 @@ class LineChart extends Component {
             id={`${this.newInsightTarget}Chart`}
             data={data}
             width={600}
-            height={400}
+            height={200}
             options={options}></Line>);
     }
 }
