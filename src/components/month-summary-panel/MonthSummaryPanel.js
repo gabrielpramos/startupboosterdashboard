@@ -52,14 +52,16 @@ export class MonthSummaryPanel extends Component {
     constructor(props) {
         super(props);
         this.state = initialState;
+        this.today = moment();
+        this.lastMonth = moment(this.today).subtract(1, 'months');
     }
 
     nodeFillingCondition() {
-        return this.state.pullRequests.data.nodes.length < this.state.pullRequests.datatotalCount && this.state.issues.data.nodes.length < this.state.issues.datatotalCount;
+        let isBetween = this.state.pullRequests.data.nodes.filter((pullRequest) => { return moment(pullRequest.node.createdAt).isBetween(this.lastMonth, this.today) }).length === this.state.pullRequests.data.nodes.length;
+        return isBetween && this.state.pullRequests.data.totalCount < this.state.pullRequests.data.nodes.length;
     }
 
-    queryDataInsightGeneration = (queryChunkedPullRequestsData, totalCountRef, averageMarker) => {
-        let insights = { average: 0, opened: {}, closed: {}, merged: {} };
+    queryDataInsightGeneration = (queryChunkedPullRequestsData, totalCountRef, averageMarker, insights) => {
 
         if (queryChunkedPullRequestsData.length === 0) {
             return insights;
@@ -103,9 +105,15 @@ export class MonthSummaryPanel extends Component {
                 return { opened: moment(item.node.createdAt).format('DD/MM'), closed: moment(item.node.closedAt).format('DD/MM') }
             });
 
-            let pullRequestsInsights = this.queryDataInsightGeneration(queryChunkedPullRequestsData, this.state.pullRequests.data, 'merged');
 
-            let issuesInsights = this.queryDataInsightGeneration(queryChunkedIssuesData, this.state.issues.data, 'opened');
+            let prInsightsObj = { average: 0, opened: {}, closed: {}, merged: {} };
+
+            let pullRequestsInsights = this.queryDataInsightGeneration(queryChunkedPullRequestsData, this.state.pullRequests.data, 'merged', prInsightsObj);
+
+
+            let issuesInsightsObj = { average: 0, opened: {}, closed: {} };
+
+            let issuesInsights = this.queryDataInsightGeneration(queryChunkedIssuesData, this.state.issues.data, 'opened', issuesInsightsObj);
 
             let newState = {
                 pullRequests: {
@@ -172,7 +180,7 @@ export class MonthSummaryPanel extends Component {
 
     componentWillReceiveProps(nextProps) {
 
-        if (this.props.repositoryName !== nextProps.repositoryName && nextProps.userName && nextProps.repositoryName) {
+        if ((this.props.repositoryName !== nextProps.repositoryName || this.props.userName !== nextProps.userName) && nextProps.userName && nextProps.repositoryName) {
 
             this.setState(initialState, () => {
                 this.attState(gitapi.getMonthSummaryData(this.props.userName, this.props.repositoryName, this.state.pullRequests.data.lastCursor, this.state.issues.data.lastCursor));

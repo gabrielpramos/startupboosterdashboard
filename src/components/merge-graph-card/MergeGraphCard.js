@@ -133,7 +133,7 @@ class MergeGraphCard extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.repositoryName !== nextProps.repositoryName && nextProps.userName && nextProps.repositoryName) {
+        if ((this.props.repositoryName !== nextProps.repositoryName || this.props.userName !== nextProps.userName) && nextProps.userName && nextProps.repositoryName) {
        
             this.setState(initialState, () => {
                 this.attState(gitapi.getMergeByPullRequestSize(nextProps.userName, nextProps.repositoryName, this.state.data.lastCursor));
