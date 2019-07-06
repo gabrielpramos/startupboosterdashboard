@@ -38,7 +38,13 @@ class RepositorySearchField extends Component {
         })
     }
 
-    handleKeyPress(event) {
+    handleUserNameEnter = event => {
+        if (event.key === 'Enter') {
+            this.props.userNameChange(this.state.repositoryName);
+        }
+    }
+
+    handleKeyPress = event => {
         if (event.key === 'Enter') {
             this.props.repositoryNameChange(this.state.repositoryName);
         }
@@ -54,7 +60,7 @@ class RepositorySearchField extends Component {
             repositoryName } = this.state;
         return (
             <Card className="box-card row-presentation">
-                <Input placeholder="Type a username or organization" type="text" name="username-field" className="input-field username-field" title="Github username or organization" value={userName} onChange={this.userNameOnChangeHandler} onBlur={() => userNameChange(userName)} />
+                <Input placeholder="Type a username or organization" type="text" name="username-field" className="input-field username-field" title="Github username or organization" value={userName} onChange={this.userNameOnChangeHandler} onBlur={() => userNameChange(userName)} onKeyPress={this.handleUserNameEnter.bind(this)} />
                 <Input placeholder="Repository" type="text" name="repositoryname-field" className="input-field repositoryname-field" title="Repository" value={repositoryName} onChange={this.repositoryNameOnChangeHandler} onBlur={() => repositoryNameChange(repositoryName)} onKeyPress={this.handleKeyPress.bind(this)} />
             </Card>
         );

@@ -1,0 +1,22 @@
+.el-card__body>.el-menu--horizontal>.el-menu-item:hover {
+    border-bottom: unset;
+}
+
+.el-card__body>.el-menu--horizontal>.el-menu-item {
+    height: 85px;
+    line-height: 35px;
+    color: rgba(000, 000, 000, 1);
+}
+
+.el-card__body>.el-menu--horizontal.el-menu--dark .el-submenu .el-menu-item.is-active, .el-menu-item.is-active {
+    color: rgba(000, 000, 000, 1);
+    border-top: 5px solid #20a0ff;
+}
+
+.el-card__body>.el-menu {
+    background-color: #fff;
+}
+
+.el-card__body>.el-menu--horizontal {
+    margin-bottom: 25px;
+}

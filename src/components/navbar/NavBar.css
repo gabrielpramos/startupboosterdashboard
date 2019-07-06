@@ -6,6 +6,7 @@
     border-bottom-left-radius: 0px;
     border-top-left-radius: 0px;
     background-color: #30313f;
+    transition: width 0.3s;
 }
 
 #app>.el-menu>.el-menu-item.home-button {
@@ -17,9 +18,28 @@
     padding: 0px;
     margin: auto;
     margin-top: 40px;
+    user-select: none;
+    transition: all 0.2s;
 }
 
 #app>.el-menu>.el-menu-item.home-button>img {
     width: 40px;
     display: inherit;
+}
+
+@media only screen and (max-width: 425px) {
+    #app>.el-menu.main-navbar {
+        width: 3vh;
+    }
+    #app>.el-menu.main-navbar:hover {
+        width: 10vh;
+    }
+    #app>.el-menu.main-navbar:hover>.el-menu-item.home-button {
+        opacity: 1;
+        width: 40px;
+    }
+    #app>.el-menu>.el-menu-item.home-button {
+        opacity: 0;
+        width: 0px;
+    }
 }

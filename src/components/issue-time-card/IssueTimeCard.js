@@ -70,11 +70,11 @@ class IssueTimeCard extends Component {
         return insights;
     }
 
-    fillStateByFetching = (fetchedData) => {
+    fillStateByFetching = () => {
         if (this.nodeFillingCondition()) {
-            this.attState(gitapi.getIssueData(this.props.userName, this.props.repositoryName, this.state.data.lastCursor), fetchedData);
+            this.attState(gitapi.getIssueData(this.props.userName, this.props.repositoryName, this.state.data.lastCursor));
         } else {
-            this.attState(gitapi.getIssueData(this.props.userName, this.props.repositoryName, this.state.data.lastCursor), fetchedData);
+            this.attState(gitapi.getIssueData(this.props.userName, this.props.repositoryName, this.state.data.lastCursor));
 
             let queryChunkedData = this.state.data.nodes.map((item) => {
                 return {
@@ -94,9 +94,9 @@ class IssueTimeCard extends Component {
         }
     }
 
-    attState = (issuesPromise, fetchedData) => {
+    attState = (issuesPromise) => {
         issuesPromise.then(res => {
-            fetchedData = res.data.data.user ? res.data.data.user : res.data.data.organization;
+            let fetchedData = res.data.data.user ? res.data.data.user : res.data.data.organization;
 
             if (fetchedData && fetchedData.repositories) {
                 let issues = fetchedData.repositories.issues;
@@ -111,7 +111,7 @@ class IssueTimeCard extends Component {
                         }
                     };
                     this.setState(newState, () => {
-                        this.fillStateByFetching(fetchedData);
+                        this.fillStateByFetching();
                     });
                 }
 
@@ -123,13 +123,10 @@ class IssueTimeCard extends Component {
 
     componentWillReceiveProps(nextProps) {
 
-        if (this.props.repositoryName !== nextProps.repositoryName && nextProps.userName && nextProps.repositoryName) {
-            let fetchedData = {
-                issues: null
-            };
+        if ((this.props.repositoryName !== nextProps.repositoryName || this.props.userName !== nextProps.userName) && nextProps.userName && nextProps.repositoryName) {
 
             this.setState(initialState, () => {
-                this.attState(gitapi.getIssueData(nextProps.userName, nextProps.repositoryName, this.state.data.lastCursor), fetchedData);
+                this.attState(gitapi.getIssueData(nextProps.userName, nextProps.repositoryName, this.state.data.lastCursor));
             });
 
         }
@@ -139,8 +136,10 @@ class IssueTimeCard extends Component {
 
         let average = this.state.insights.average;
         let cardValue = '';
-        if (this.state.insights.average !== undefined) {
+        if (this.state.insights.average !== 0) {
             cardValue = `${DateUtils.humanizeTime(average.days, 'days', 'day')} ${DateUtils.humanizeTime(average.hours, 'hours', false, 'h')}${DateUtils.humanizeTime(average.minutes, 'minutes', false, 'm')}`;
+        } else if (this.props.repositoryName !== '' && this.state.insights.average === 0) {
+            cardValue = 'There are no issues to show';
         }
 
         return (

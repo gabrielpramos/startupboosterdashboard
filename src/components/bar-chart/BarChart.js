@@ -4,6 +4,7 @@ import 'chartjs-plugin-style';
 import ChartSettings from '../../utils/ChartSettings';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
+import './BarChart.css';
 
 const mapStateToProps = store => ({
     mergeDataInsightsState: store.mergeDataInsightsState.value,
